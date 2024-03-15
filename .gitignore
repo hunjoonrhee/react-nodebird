@@ -1,3 +1,4 @@
 .vscode
 apps/frontend/node_modules/
 apps/frontend/.next/
+.idea
