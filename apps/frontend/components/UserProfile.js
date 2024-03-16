@@ -1,37 +1,50 @@
-import React, {useCallback} from "react";
-import {Avatar, Card, Button} from "antd";
-import styled from "styled-components";
-import {useDispatch} from "react-redux";
-import {logoutAction} from "../reducers/user";
+import React, { useCallback } from 'react';
+import { Avatar, Card, Button } from 'antd';
+import styled from 'styled-components';
+import { useDispatch, useSelector } from 'react-redux';
+import { logoutRequestAction } from '../reducers/user';
 
 const ButtonWrapper = styled(Button)`
   margin-top: 10px;
 `;
 
 const UserProfile = () => {
-    const dispatch = useDispatch();
-    const onLogOut = useCallback(() => {
-        dispatch(logoutAction())
-    }, []);
+  const dispatch = useDispatch();
+  const { me, isLoggingOut } = useSelector((state) => state.user);
+  const onLogOut = useCallback(() => {
+    dispatch(logoutRequestAction());
+  }, []);
 
-    return (
-        <Card
-            actions={[
-                <div key="twit">
-                    Twit <br/> 0
-                </div>,
-                <div key="followings">
-                    Following <br/> 0
-                </div>,
-                <div key="followers">
-                    Followers <br/> 0
-                </div>,
-            ]}
-        >
-            <Card.Meta avatar={<Avatar>HR</Avatar>} title="Hunjoon Rhee"/>
-            <ButtonWrapper onClick={onLogOut}> Sign out</ButtonWrapper>
-        </Card>
-    );
+  return (
+    <Card
+      actions={[
+        <div key="twit">
+          Twit
+          {' '}
+          <br />
+          {' '}
+          {me.Post?.length}
+        </div>,
+        <div key="followings">
+          Following
+          {' '}
+          <br />
+          {' '}
+          {me.Followings.length}
+        </div>,
+        <div key="followers">
+          Followers
+          {' '}
+          <br />
+          {' '}
+          {me.Followers.length}
+        </div>,
+      ]}
+    >
+      <Card.Meta avatar={<Avatar>{me.nickname}</Avatar>} title={me.nickname} />
+      <ButtonWrapper onClick={onLogOut} loading={isLoggingOut}> Sign out</ButtonWrapper>
+    </Card>
+  );
 };
 
 export default UserProfile;
