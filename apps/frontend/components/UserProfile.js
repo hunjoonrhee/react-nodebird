@@ -23,7 +23,7 @@ const UserProfile = () => {
           {' '}
           <br />
           {' '}
-          {me.Post?.length}
+          {me.Posts.length}
         </div>,
         <div key="followings">
           Following

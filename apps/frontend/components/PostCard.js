@@ -5,17 +5,21 @@ import {
 import {
   EllipsisOutlined, HeartOutlined, HeartTwoTone, MessageOutlined, RetweetOutlined,
 } from '@ant-design/icons';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Comment } from '@ant-design/compatible';
 import PostImages from './PostImages';
 import CommentForm from './CommentForm';
 import PostCardContent from './PostCardContent';
+import { REMOVE_POST_REQUEST } from '../actions';
+import FollowButton from './FollowButton';
 
 const PostCard = ({ post }) => {
   const [liked, setLiked] = useState(false);
   const [commentFormOpened, setCommentFormOpened] = useState(false);
+  const dispatch = useDispatch();
 
   const { me } = useSelector((state) => state.user);
+  const { removePostLoading } = useSelector((state) => state.post);
   const id = me?.id;
 
   const onToggleLike = useCallback(() => {
@@ -23,6 +27,13 @@ const PostCard = ({ post }) => {
   }, []);
   const onToggleComment = useCallback(() => {
     setCommentFormOpened((prev) => !prev);
+  }, []);
+
+  const onRemovePost = useCallback(() => {
+    dispatch({
+      type: REMOVE_POST_REQUEST,
+      data: post.id,
+    });
   }, []);
 
   return (
@@ -40,11 +51,11 @@ const PostCard = ({ post }) => {
             content={(
               <Button.Group>
                 {id && post.User.id === id ? (
-      <>
-                      <Button>Edit</Button>
-                      <Button type="danger">Delete</Button>
-                    </>
-    ) : <Button>Report</Button>}
+                  <>
+                    <Button>Edit</Button>
+                    <Button type="danger" loading={removePostLoading} onClick={onRemovePost}>Delete</Button>
+                  </>
+                ) : <Button>Report</Button>}
 
               </Button.Group>
                     )}
@@ -52,6 +63,7 @@ const PostCard = ({ post }) => {
             <EllipsisOutlined />
           </Popover>,
         ]}
+        extra={id && <FollowButton post={post} />}
       >
         <Card.Meta
           avatar={<Avatar>{post.User.nickname[0]}</Avatar>}
