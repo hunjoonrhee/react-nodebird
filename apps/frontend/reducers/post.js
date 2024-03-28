@@ -1,6 +1,5 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import shortId from 'shortid';
-import produce from 'immer';
+import { produce } from 'immer';
 import { faker } from '@faker-js/faker';
 import {
   ADD_COMMENT_FAILURE,
@@ -35,25 +34,31 @@ export const initialState = {
   loadPostsError: null,
 };
 
-export const generateDummyPost = (number) => Array(number).fill().map(() => ({
-  id: shortId.generate(),
-  User: {
-    id: shortId.generate(),
-    nickname: faker.person.fullName(),
-  },
-  content: faker.lorem.paragraph(),
-  Images: [{
-    src: faker.image.urlPicsumPhotos(),
-  }],
-  Comments: [{
+export const generateDummyPost = (number) => Array(number)
+  .fill()
+  .map(() => ({
     id: shortId.generate(),
     User: {
       id: shortId.generate(),
       nickname: faker.person.fullName(),
     },
-    content: faker.lorem.sentence(),
-  }],
-}));
+    content: faker.lorem.paragraph(),
+    Images: [
+      {
+        src: faker.image.urlPicsumPhotos(),
+      },
+    ],
+    Comments: [
+      {
+        id: shortId.generate(),
+        User: {
+          id: shortId.generate(),
+          nickname: faker.person.fullName(),
+        },
+        content: faker.lorem.sentence(),
+      },
+    ],
+  }));
 
 export const addPost = (data) => ({
   type: ADD_POST_REQUEST,
@@ -84,6 +89,7 @@ const dummyComment = (data) => ({
   },
 });
 
+// eslint-disable-next-line default-param-last
 const reducer = (state = initialState, action) => produce(state, (draft) => {
   switch (action.type) {
     case LOAD_POSTS_REQUEST:
@@ -140,7 +146,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
       draft.addCommentError = null;
       break;
     case ADD_COMMENT_SUCCESS: {
-      const post = draft.mainPosts.find((v) => v.id === action.postId);
+      const post = draft.mainPosts.find((v) => v.id === action.data.postId);
       post.Comments.unshift(dummyComment(action.data.content));
       draft.addCommentLoading = false;
       draft.addCommentDone = true;

@@ -1,14 +1,10 @@
 import React, { useCallback } from 'react';
 import { Avatar, Card, Button } from 'antd';
-import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutRequestAction } from '../reducers/user';
+import { style as UserProfileStyle } from '../styles/UserProfile.style';
 
-const ButtonWrapper = styled(Button)`
-  margin-top: 10px;
-`;
-
-const UserProfile = () => {
+function UserProfile() {
   const dispatch = useDispatch();
   const { me, isLoggingOut } = useSelector((state) => state.user);
   const onLogOut = useCallback(() => {
@@ -19,32 +15,22 @@ const UserProfile = () => {
     <Card
       actions={[
         <div key="twit">
-          Twit
-          {' '}
-          <br />
-          {' '}
-          {me.Posts.length}
+          Twit <br /> {me.Posts.length}
         </div>,
         <div key="followings">
-          Following
-          {' '}
-          <br />
-          {' '}
-          {me.Followings.length}
+          Following <br /> {me.Followings.length}
         </div>,
         <div key="followers">
-          Followers
-          {' '}
-          <br />
-          {' '}
-          {me.Followers.length}
+          Followers <br /> {me.Followers.length}
         </div>,
-      ]}
-    >
+      ]}>
       <Card.Meta avatar={<Avatar>{me.nickname}</Avatar>} title={me.nickname} />
-      <ButtonWrapper onClick={onLogOut} loading={isLoggingOut}> Sign out</ButtonWrapper>
+      <Button style={UserProfileStyle.btn} onClick={onLogOut} loading={isLoggingOut}>
+        {' '}
+        Sign out
+      </Button>
     </Card>
   );
-};
+}
 
 export default UserProfile;

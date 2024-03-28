@@ -1,11 +1,9 @@
 import { Button, Form, Input } from 'antd';
-import React, {
-  useCallback, useEffect, useRef, useState,
-} from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addPost } from '../reducers/post';
 
-const PostForm = () => {
+function PostForm() {
   const dispatch = useDispatch();
   const imageInput = useRef(null);
   const { imagePaths, addPostDone } = useSelector((state) => state.post);
@@ -34,7 +32,9 @@ const PostForm = () => {
       <div>
         <input type="file" multiple hidden ref={imageInput} style={{ display: 'none' }} />
         <Button onClick={onClickImpageUpload}>Image Upload</Button>
-        <Button type="primary" style={{ float: 'right' }} htmlType="submit">HAHAHA</Button>
+        <Button type="primary" style={{ float: 'right' }} htmlType="submit">
+          HAHAHA
+        </Button>
       </div>
       <div>
         {imagePaths.map((v) => (
@@ -48,5 +48,5 @@ const PostForm = () => {
       </div>
     </Form>
   );
-};
+}
 export default PostForm;

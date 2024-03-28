@@ -1,4 +1,4 @@
-import produce from 'immer';
+import { produce } from 'immer';
 import {
   LOG_IN_REQUEST,
   LOG_IN_SUCCESS,
@@ -17,7 +17,9 @@ import {
   FOLLOW_REQUEST,
   FOLLOW_FAILURE,
   FOLLOW_SUCCESS,
-  UNFOLLOW_FAILURE, UNFOLLOW_SUCCESS, UNFOLLOW_REQUEST,
+  UNFOLLOW_FAILURE,
+  UNFOLLOW_SUCCESS,
+  UNFOLLOW_REQUEST,
 } from '../actions';
 
 export const initialState = {
@@ -124,7 +126,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
       draft.me.Posts.unshift({ id: action.data });
       break;
     case REMOVE_POST_OF_ME:
-      draft.me.Posts.filter(() => v.id !== action.data);
+      draft.me.Posts.filter((v) => v.id !== action.data);
       break;
     case FOLLOW_REQUEST:
       draft.followLoading = true;

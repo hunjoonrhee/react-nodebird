@@ -1,7 +1,7 @@
 {
-  "parser": "babel-eslint",
+  "parser": "@babel/eslint-parser",
   "parserOptions": {
-    "ecmaVersion": 2020,
+    "ecmaVersion": 2023,
     "sourceType": "module",
     "ecmaFeatures": {
       "jsx": true
@@ -24,6 +24,19 @@
     "react/jsx-filename-extension": "off",
     "react/jsx-one-expression-per-line": "off",
     "object-curly-newline": "off",
-    "no-param-reassign": "off"
+    "no-param-reassign": "off",
+    "eslint-disable-next-line": "off",
+    "import/prefer-default-export": "off",
+    "max-len": ["error", { "code": 120 }],
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": true,
+        "optionalDependencies": false,
+        "peerDependencies": false
+      }
+    ],
+    "react/no-array-index-key": "off"
+
   }
 }

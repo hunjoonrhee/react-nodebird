@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { Form, Input } from 'antd';
 
-const NicknameEditForm = ({}) => {
+function NicknameEditForm({}) {
   const style = useMemo(
     () => ({
       marginBottom: '20px',
@@ -16,6 +16,6 @@ const NicknameEditForm = ({}) => {
       <Input.Search addonBefore="Nickname" enterButton="Edit" />
     </Form>
   );
-};
+}
 
 export default NicknameEditForm;

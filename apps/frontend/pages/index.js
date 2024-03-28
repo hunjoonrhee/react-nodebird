@@ -5,7 +5,7 @@ import PostForm from '../components/PostForm';
 import PostCard from '../components/PostCard';
 import { LOAD_POSTS_REQUEST } from '../actions';
 
-const Home = () => {
+function Home() {
   const { me } = useSelector((state) => state.user);
   const { mainPosts, hasMorePost, loadPostsLoading } = useSelector((state) => state.post);
 
@@ -35,9 +35,11 @@ const Home = () => {
   return (
     <AppLayout>
       {me && <PostForm />}
-      {mainPosts.map((post) => <PostCard key={post.id} post={post} />)}
+      {mainPosts.map((post) => (
+        <PostCard key={post.id} post={post} />
+      ))}
     </AppLayout>
   );
-};
+}
 
 export default Home;

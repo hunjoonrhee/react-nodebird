@@ -1,6 +1,4 @@
-import {
-  all, fork, takeLatest, put, delay, throttle,
-} from 'redux-saga/effects';
+import { all, fork, takeLatest, put, delay, throttle } from 'redux-saga/effects';
 import axios from 'axios';
 import shortId from 'shortid';
 import {
@@ -11,7 +9,9 @@ import {
   ADD_POST_REQUEST,
   ADD_POST_SUCCESS,
   ADD_POST_TO_ME,
-  LOAD_POSTS_FAILURE, LOAD_POSTS_REQUEST, LOAD_POSTS_SUCCESS,
+  LOAD_POSTS_FAILURE,
+  LOAD_POSTS_REQUEST,
+  LOAD_POSTS_SUCCESS,
   REMOVE_POST_FAILURE,
   REMOVE_POST_OF_ME,
   REMOVE_POST_REQUEST,
@@ -128,10 +128,5 @@ function* watchRemovePost() {
 }
 
 export default function* postSaga() {
-  yield all([
-    fork(watchLoadPost),
-    fork(watchAddPost),
-    fork(watchAddComment),
-    fork(watchRemovePost),
-  ]);
+  yield all([fork(watchLoadPost), fork(watchAddPost), fork(watchAddComment), fork(watchRemovePost)]);
 }

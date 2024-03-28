@@ -1,10 +1,6 @@
 import React, { useCallback, useState } from 'react';
-import {
-  Avatar, Button, Card, List, Popover,
-} from 'antd';
-import {
-  EllipsisOutlined, HeartOutlined, HeartTwoTone, MessageOutlined, RetweetOutlined,
-} from '@ant-design/icons';
+import { Avatar, Button, Card, List, Popover } from 'antd';
+import { EllipsisOutlined, HeartOutlined, HeartTwoTone, MessageOutlined, RetweetOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { Comment } from '@ant-design/compatible';
 import PostImages from './PostImages';
@@ -13,7 +9,7 @@ import PostCardContent from './PostCardContent';
 import { REMOVE_POST_REQUEST } from '../actions';
 import FollowButton from './FollowButton';
 
-const PostCard = ({ post }) => {
+function PostCard({ post }) {
   const [liked, setLiked] = useState(false);
   const [commentFormOpened, setCommentFormOpened] = useState(false);
   const dispatch = useDispatch();
@@ -42,29 +38,32 @@ const PostCard = ({ post }) => {
         cover={post.Images[0] && <PostImages images={post.Images} />}
         actions={[
           <RetweetOutlined key="retweet" />,
-          liked
-            ? <HeartTwoTone key="heart" twoToneColor="#eb2f96" onClick={onToggleLike} />
-            : <HeartOutlined key="heart" onClick={onToggleLike} />,
+          liked ? (
+            <HeartTwoTone key="heart" twoToneColor="#eb2f96" onClick={onToggleLike} />
+          ) : (
+            <HeartOutlined key="heart" onClick={onToggleLike} />
+          ),
           <MessageOutlined key="comment" onClick={onToggleComment} />,
           <Popover
             key="more"
-            content={(
+            content={
               <Button.Group>
                 {id && post.User.id === id ? (
                   <>
                     <Button>Edit</Button>
-                    <Button type="danger" loading={removePostLoading} onClick={onRemovePost}>Delete</Button>
+                    <Button type="danger" loading={removePostLoading} onClick={onRemovePost}>
+                      Delete
+                    </Button>
                   </>
-                ) : <Button>Report</Button>}
-
+                ) : (
+                  <Button>Report</Button>
+                )}
               </Button.Group>
-                    )}
-          >
+            }>
             <EllipsisOutlined />
           </Popover>,
         ]}
-        extra={id && <FollowButton post={post} />}
-      >
+        extra={id && <FollowButton post={post} />}>
         <Card.Meta
           avatar={<Avatar>{post.User.nickname[0]}</Avatar>}
           title={post.User.nickname}
@@ -92,6 +91,6 @@ const PostCard = ({ post }) => {
       )}
     </div>
   );
-};
+}
 
 export default PostCard;

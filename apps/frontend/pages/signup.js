@@ -1,8 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import Head from 'next/head';
-import {
-  Checkbox, Form, Input, Button,
-} from 'antd';
+import { Checkbox, Form, Input, Button } from 'antd';
 import { useDispatch } from 'react-redux';
 import AppLayout from '../components/AppLayout';
 import useInput from '../hooks/useInput';
@@ -10,7 +8,7 @@ import { style as signupStyle } from '../styles/signup.style';
 import { SIGN_UP_REQUEST } from '../actions';
 import { isSigningUp } from '../reducers/user';
 
-const Signup = () => {
+function Signup() {
   const [email, onChangeEmail] = useInput('');
   const [password, onChangePassword] = useInput('');
   const [nickname, onChangeNickname] = useInput('');
@@ -23,10 +21,13 @@ const Signup = () => {
 
   const dispatch = useDispatch();
 
-  const onChangePasswordCheck = useCallback((e) => {
-    setPasswordCheck(e.target.value);
-    setPasswordError(e.target.value !== password);
-  }, [password]);
+  const onChangePasswordCheck = useCallback(
+    (e) => {
+      setPasswordCheck(e.target.value);
+      setPasswordError(e.target.value !== password);
+    },
+    [password],
+  );
 
   const onChangeTerm = useCallback((e) => {
     setTerm(e.target.checked);
@@ -80,8 +81,10 @@ const Signup = () => {
           {passwordError && <div style={signupStyle.ErrorDiv}> Password does not match </div>}
         </div>
         <div>
-          <Checkbox name="user-term" checked={term} onChange={onChangeTerm}>Agree to Terms and Conditions</Checkbox>
-          {termError && <div style={signupStyle.ErrorDiv}> You must accept the terms and conditions </div> }
+          <Checkbox name="user-term" checked={term} onChange={onChangeTerm}>
+            Agree to Terms and Conditions
+          </Checkbox>
+          {termError && <div style={signupStyle.ErrorDiv}> You must accept the terms and conditions </div>}
         </div>
         <div style={signupStyle.signUpbtn}>
           <Button type="primary" htmlType="submit" loading={isSigningUp}>
@@ -91,6 +94,6 @@ const Signup = () => {
       </Form>
     </AppLayout>
   );
-};
+}
 
 export default Signup;

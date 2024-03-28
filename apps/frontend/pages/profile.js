@@ -6,7 +6,7 @@ import AppLayout from '../components/AppLayout';
 import NicknameEditForm from '../components/NicknameEditForm';
 import FollowList from '../components/FollowerList';
 
-const Profile = () => {
+function Profile() {
   const { me } = useSelector((state) => state.user);
 
   useEffect(() => {
@@ -29,6 +29,6 @@ const Profile = () => {
       </AppLayout>
     </>
   );
-};
+}
 
 export default Profile;

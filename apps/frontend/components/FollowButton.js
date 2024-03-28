@@ -3,7 +3,7 @@ import { Button } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { FOLLOW_REQUEST, UNFOLLOW_REQUEST } from '../actions';
 
-const FollowButton = ({ post }) => {
+function FollowButton({ post }) {
   const dispatch = useDispatch();
   const { me, followLoading, unfollowLoading } = useSelector((state) => state.user);
   const isFollowing = me && me.Followings.find((v) => v.id === post.User.id);
@@ -27,6 +27,6 @@ const FollowButton = ({ post }) => {
       {isFollowing ? 'Unfollow' : 'Follow'}
     </Button>
   );
-};
+}
 
 export default FollowButton;

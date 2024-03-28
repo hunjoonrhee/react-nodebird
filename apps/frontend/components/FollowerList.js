@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { StopOutlined } from '@ant-design/icons';
 import { style as FollowerListStyle } from '../styles/FollowerList.style';
 
-const FollowList = ({ header, data }) => {
+function FollowList({ header, data }) {
   const style = useMemo(
     () => ({
       marginBottom: 20,
@@ -18,11 +18,11 @@ const FollowList = ({ header, data }) => {
       grid={{ gutter: 4, xs: 2, md: 3 }}
       size="small"
       header={<div>{header}</div>}
-      loadMore={(
+      loadMore={
         <div style={FollowerListStyle.btnDiv}>
           <Button>More</Button>
         </div>
-      )}
+      }
       bordered
       dataSource={data}
       renderItem={(item) => (
@@ -34,7 +34,7 @@ const FollowList = ({ header, data }) => {
       )}
     />
   );
-};
+}
 
 FollowList.propTypes = {
   header: PropTypes.string.isRequired,
