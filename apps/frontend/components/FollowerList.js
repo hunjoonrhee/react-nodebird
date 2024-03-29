@@ -1,15 +1,15 @@
-import React, { useMemo } from "react";
-import { Card, List, Button } from "antd";
-import PropTypes from "prop-types";
-import { StopOutlined } from '@ant-design/icons'
-import {style as FollowerListStyle} from '../styles/FollowerList.style'
+import React, { useMemo } from 'react';
+import { Card, List, Button } from 'antd';
+import PropTypes from 'prop-types';
+import { StopOutlined } from '@ant-design/icons';
+import { style as FollowerListStyle } from '../styles/FollowerList.style';
 
-const FollowList = ({ header, data }) => {
+function FollowList({ header, data }) {
   const style = useMemo(
     () => ({
       marginBottom: 20,
     }),
-    []
+    [],
   );
 
   return (
@@ -34,7 +34,7 @@ const FollowList = ({ header, data }) => {
       )}
     />
   );
-};
+}
 
 FollowList.propTypes = {
   header: PropTypes.string.isRequired,

@@ -1,37 +1,36 @@
-import React, {useCallback} from "react";
-import {Avatar, Card, Button} from "antd";
-import styled from "styled-components";
-import {useDispatch} from "react-redux";
-import {logoutAction} from "../reducers/user";
+import React, { useCallback } from 'react';
+import { Avatar, Card, Button } from 'antd';
+import { useDispatch, useSelector } from 'react-redux';
+import { logoutRequestAction } from '../reducers/user';
+import { style as UserProfileStyle } from '../styles/UserProfile.style';
 
-const ButtonWrapper = styled(Button)`
-  margin-top: 10px;
-`;
+function UserProfile() {
+  const dispatch = useDispatch();
+  const { me, isLoggingOut } = useSelector((state) => state.user);
+  const onLogOut = useCallback(() => {
+    dispatch(logoutRequestAction());
+  }, []);
 
-const UserProfile = () => {
-    const dispatch = useDispatch();
-    const onLogOut = useCallback(() => {
-        dispatch(logoutAction())
-    }, []);
-
-    return (
-        <Card
-            actions={[
-                <div key="twit">
-                    Twit <br/> 0
-                </div>,
-                <div key="followings">
-                    Following <br/> 0
-                </div>,
-                <div key="followers">
-                    Followers <br/> 0
-                </div>,
-            ]}
-        >
-            <Card.Meta avatar={<Avatar>HR</Avatar>} title="Hunjoon Rhee"/>
-            <ButtonWrapper onClick={onLogOut}> Sign out</ButtonWrapper>
-        </Card>
-    );
-};
+  return (
+    <Card
+      actions={[
+        <div key="twit">
+          Twit <br /> {me.Posts.length}
+        </div>,
+        <div key="followings">
+          Following <br /> {me.Followings.length}
+        </div>,
+        <div key="followers">
+          Followers <br /> {me.Followers.length}
+        </div>,
+      ]}>
+      <Card.Meta avatar={<Avatar>{me.nickname}</Avatar>} title={me.nickname} />
+      <Button style={UserProfileStyle.btn} onClick={onLogOut} loading={isLoggingOut}>
+        {' '}
+        Sign out
+      </Button>
+    </Card>
+  );
+}
 
 export default UserProfile;

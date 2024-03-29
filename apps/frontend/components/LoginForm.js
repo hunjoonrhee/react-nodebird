@@ -1,63 +1,45 @@
-import React, {useCallback, useState} from "react";
-import {Button, Form, Input} from "antd";
-import Link from "next/link";
-import styled from "styled-components";
-import useInput from "../hooks/useInput";
-import {useDispatch} from "react-redux";
-import {loginAction} from "../reducers/user";
+import React, { useCallback } from 'react';
+import { Button, Form, Input } from 'antd';
+import Link from 'next/link';
+import { useDispatch, useSelector } from 'react-redux';
+import useInput from '../hooks/useInput';
+import { loginRequestAction } from '../reducers/user';
 
-const ButtonWrapper = styled.div`
-  margin-top: 10px;
-`;
+function LoginForm() {
+  const dispatch = useDispatch();
+  const { isLoggingIn } = useSelector((state) => state.user);
+  const [email, onChangeEmail] = useInput('');
+  const [password, onChangePassword] = useInput('');
 
-const LoginFormWrapper = styled(Form)`
-  padding: 10px;
-`;
+  const onSubmitForm = useCallback(() => {
+    dispatch(loginRequestAction({ email, password }));
+  }, [(email, password)]);
 
-const LoginForm = () => {
-    const dispatch = useDispatch();
-    const [id, onChangeId] = useInput("");
-    const [password, onChangePassword] = useInput("");
-
-    const onSubmitForm = useCallback(
-        (e) => {
-            console.log(id, password);
-            dispatch(loginAction({id, password}))
-        },
-        [(id, password)]
-    );
-
-    return (
-        <LoginFormWrapper onFinish={onSubmitForm}>
-            <div>
-                <label htmlFor="user-id"> User name</label>
-                <br/>
-                <Input name="user-id" value={id} onChange={onChangeId} required/>
-            </div>
-            <div>
-                <label htmlFor="user-password"> Password</label>
-                <br/>
-                <Input
-                    name="user-password"
-                    type="password"
-                    value={password}
-                    onChange={onChangePassword}
-                    required
-                />
-            </div>
-            <ButtonWrapper>
-                <Button type="primary" htmlType="submit" loading={false}>
-                    Sign In
-                </Button>
-                <Link href={"/signup"}>
-                    <a>
-                        <Button>Sign Up</Button>{" "}
-                    </a>
-                </Link>
-            </ButtonWrapper>
-        </LoginFormWrapper>
-    );
-};
-
+  return (
+    <Form onFinish={onSubmitForm} style={{ padding: '10px' }}>
+      <div>
+        <label htmlFor="user-email"> User email</label>
+        <br />
+        <Input name="user-email" type="email" value={email} onChange={onChangeEmail} required />
+      </div>
+      <div>
+        <label htmlFor="user-password"> Password</label>
+        <br />
+        <Input name="user-password" type="password" value={password} onChange={onChangePassword} required />
+      </div>
+      <div style={{ marginTop: '10px' }}>
+        <Button type="primary" htmlType="submit" loading={isLoggingIn}>
+          Sign In
+        </Button>
+        <Link legacyBehavior href="/signup">
+          <a>
+            <Button>Sign Up</Button>
+            {' '}
+          </a>
+        </Link>
+      </div>
+    </Form>
+  );
+}
 
 export default LoginForm;

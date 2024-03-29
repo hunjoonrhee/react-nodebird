@@ -1,74 +1,68 @@
-import styled, {createGlobalStyle} from "styled-components";
-import {CloseOutlined} from "@ant-design/icons";
+import { createGlobalStyle } from 'styled-components';
 
-export const Header = styled.header`
-  height: 44px;
-  background: white;
-  position: relative;
-  padding: 0;
-  text-align: center;
-  
-  & h1 {
-    margin: 0;
-    font-size: 17px;
-    color: #333;
-    line-height: 44px;
-  }
-  
-  & button {
-    position: absolute;
-    right: 0;
-    top: 0;
-    padding: 15px;
-    line-height: 14px;
-    cursor: pointer;
-  }
-`
+export const style = {
+  header: {
+    height: '44px',
+    background: 'white',
+    position: 'relative',
+    padding: 0,
+    textAlign: 'center',
+  },
 
-export const SlickWrapper = styled.div`
-  background: #090909;
-  height: calc(100% - 44px);
-`;
+  btn: {
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    padding: '15px',
+    lineHeight: '14px',
+    cursor: 'pointer',
 
-export const ImgWrapper = styled.div`
-  padding: 32px;
-  text-align: center;
-  
-  & img {
-    margin: 0 auto;
-    max-height: 600px;
-    align-items: center;
-  }
-`;
+  },
 
-export const CloseBtn = styled(CloseOutlined)`
-  position: absolute;
-  right: 0;
-  top: 0;
-  padding: 15px;
-  line-height: 14px;
-  cursor: pointer;
-`
+  slick: {
+    background: '#090909',
+    height: 'calc(100% - 44px)',
+  },
 
-export const Indicator = styled.div`
-  text-align: center;
-  
-  & > div {
-    width: 75px;
-    height: 30px;
-    line-height: 30px;
-    border-radius: 15px;
-    background: #313131;
-    display: inline-block;
-    text-align: center;
-    color: white;
-    font-size: 15px;
-  }
+  imgDiv: {
+    padding: '32px',
+    textAlign: 'center',
+  },
 
-`
+  img: {
+    marginTop: 0,
+    marginBottom: 0,
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    maxHeight: '600px',
+    alignItems: 'center',
+  },
+
+  closeBtn: {
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    padding: '15px',
+    lineHeight: '14px',
+    cursor: 'pointer',
+  },
+
+  indicatorDiv: {
+    width: '75px',
+    height: '30px',
+    lineHeight: '30px',
+    borderRadius: '15px',
+    background: '#313131',
+    display: 'inline-block',
+    textAlign: 'center',
+    color: 'white',
+    fontSize: '15px',
+  },
+
+};
 
 export const Global = createGlobalStyle`
   .slick-slide {
     display: inline-block;
   }
-`
+`;
