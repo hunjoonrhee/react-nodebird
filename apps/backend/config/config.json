@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "root",
+    "password": "RheeHunWns5628!@",
+    "database": "react-node-bird",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "test": {
+    "username": "root",
+    "password": "RheeHunWns5628!@",
+    "database": "react-node-bird",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "root",
+    "password": "RheeHunWns5628!@",
+    "database": "react-node-bird",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  }
+}
