@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon app"
   },
   "author": "Hunjoon Rhee",
   "license": "ISC",
@@ -13,5 +14,8 @@
     "mysql2": "3.9.7",
     "sequelize": "6.37.3",
     "sequelize-cli": "6.6.2"
+  },
+  "devDependencies": {
+    "nodemon": "3.1.0"
   }
 }
