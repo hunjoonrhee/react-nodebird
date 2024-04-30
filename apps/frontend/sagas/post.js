@@ -20,17 +20,15 @@ import {
 import { generateDummyPost } from '../reducers/post';
 
 function loadPostsAPI() {
-  return axios.post('/api/post');
+  return axios.get('/posts');
 }
 
 function* loadPosts(action) {
   try {
-    // const result = yield call(loadPostsAPI);
-    yield delay(1000);
-    const id = shortId.generate();
+    const result = yield call(loadPostsAPI, action.data);
     yield put({
       type: LOAD_POSTS_SUCCESS,
-      data: generateDummyPost(10),
+      data: result.data,
     });
   } catch (err) {
     yield put({
@@ -74,6 +72,7 @@ function* addComment(action) {
       data: result.data,
     });
   } catch (err) {
+    console.error(err);
     yield put({
       type: ADD_COMMENT_FAILURE,
       data: err.response.data,

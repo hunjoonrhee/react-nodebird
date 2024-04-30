@@ -1,13 +1,15 @@
 const express = require('express');
 const postRouter = require('./routes/post');
 const userRouter = require('./routes/user');
+const postsRouter = require('./routes/posts');
 const cors = require('cors');
 const db = require('./models');
 const passportConfig = require('./passport');
 const session = require('express-session')
 const passport = require('passport');
 const cookieParser = require('cookie-parser')
-const dotenv = require('dotenv')
+const dotenv = require('dotenv');
+const morgan = require('morgan');
 dotenv.config()
 
 const app = express();
@@ -20,6 +22,7 @@ db.sequelize.sync()
 
 passportConfig();
 
+app.use(morgan('dev'))
 app.use(cors({
   origin: 'http://localhost:3002',
   credentials: true,
@@ -46,15 +49,10 @@ app.get('/', (req, res) => {
   res.send('hello express api');
 })
 
-app.get('/posts', (req, res) => {
-  res.json([
-    { id: 1, content: 'hello'},
-    { id: 2, content: 'hello2'},
-    { id: 3, content: 'hello3'}
-  ])
-})
 app.use('/post', postRouter);
+app.use('/posts', postsRouter);
 app.use('/user', userRouter);
+
 
 app.listen(3065, () => {
   console.log('Server starting!')

@@ -34,33 +34,6 @@ export const initialState = {
   loadPostsError: null,
 };
 
-export const generateDummyPost = (number) =>
-  Array(number)
-    .fill()
-    .map(() => ({
-      id: shortId.generate(),
-      User: {
-        id: shortId.generate(),
-        nickname: faker.person.fullName(),
-      },
-      content: faker.lorem.paragraph(),
-      Images: [
-        {
-          src: faker.image.urlPicsumPhotos(),
-        },
-      ],
-      Comments: [
-        {
-          id: shortId.generate(),
-          User: {
-            id: shortId.generate(),
-            nickname: faker.person.fullName(),
-          },
-          content: faker.lorem.sentence(),
-        },
-      ],
-    }));
-
 export const addPost = (data) => ({
   type: ADD_POST_REQUEST,
   data,
@@ -69,25 +42,6 @@ export const addPost = (data) => ({
 export const addComment = (data) => ({
   ADD_COMMENT_REQUEST,
   data,
-});
-const dummyPost = (data) => ({
-  id: data.id,
-  content: data.content,
-  User: {
-    id: 1,
-    nickname: 'Joonie',
-  },
-  Images: [],
-  Comments: [],
-});
-
-const dummyComment = (data) => ({
-  id: shortId.generate(),
-  content: data,
-  User: {
-    id: 2,
-    nickname: 'eunjoo',
-  },
 });
 
 // eslint-disable-next-line default-param-last
@@ -103,7 +57,7 @@ const reducer = (state = initialState, action) =>
         draft.loadPostsLoading = false;
         draft.loadPostsDone = true;
         draft.mainPosts = action.data.concat(draft.mainPosts);
-        draft.hasMorePost = draft.mainPosts.length < 100;
+        draft.hasMorePost = draft.mainPosts.length < 50;
         break;
       }
       case LOAD_POSTS_FAILURE:
@@ -149,7 +103,7 @@ const reducer = (state = initialState, action) =>
         break;
       case ADD_COMMENT_SUCCESS: {
         const post = draft.mainPosts.find((v) => v.id === action.data.PostId);
-        post.Comments.unshift(action.data.content);
+        post.Comments.unshift(action.data);
         draft.addCommentLoading = false;
         draft.addCommentDone = true;
         break;
