@@ -5,15 +5,15 @@ const bcrypt = require('bcrypt');
 
 module.exports = () => {
   passport.use(new LocalStrategy({
-    _usernameField: 'email',
-    _passwordField: 'password'
+    usernameField: 'email',
+    passwordField: 'password'
   }, async (email, password, done)=> {
     try{
       const user = await User.findOne({
         where: { email }
       });
       if (!user) {
-        done(null, false, {reason: 'user not exist'});
+        return done(null, false, {reason: 'user not exist'});
       }
       const result = await bcrypt.compare(password, user.password)
       if (result) {

@@ -25,11 +25,13 @@ function AppLayout({ children }) {
         <Menu.Item key="search">
           <Input.Search style={{ verticalAlign: 'middle' }} enterButton />
         </Menu.Item>
-        <Menu.Item key="signup">
-          <Link legacyBehavior href="/signup">
-            <a>Sign up</a>
-          </Link>
-        </Menu.Item>
+        {!(me && me.id) && (
+          <Menu.Item key="signup">
+            <Link legacyBehavior href="/signup">
+              <a>Sign up</a>
+            </Link>
+          </Menu.Item>
+        )}
       </Menu>
       <Row gutter={8}>
         <Col xs={24} md={6}>
@@ -43,8 +45,7 @@ function AppLayout({ children }) {
             href="https://www.zerocho.com"
             /* eslint-disable-next-line react/jsx-no-target-blank */
             target="_blank"
-            rel="noopener noreferrer"
-          >
+            rel="noopener noreferrer">
             Based on ZeroCho Lecture
           </a>
         </Col>

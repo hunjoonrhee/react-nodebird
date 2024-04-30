@@ -9,11 +9,17 @@ import { style as signupStyle } from '../styles/signup.style';
 import { SIGN_UP_REQUEST } from '../actions';
 
 function Signup() {
-  const { isSigningUp, isSignedUp, signUpError } = useSelector((state) => state.user);
+  const { isSigningUp, isSignedUp, signUpError, me } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    if (me && me.id) {
+      Router.replace('/');
+    }
+  }, [me && me.id]);
 
   useEffect(() => {
     if (isSignedUp) {
-      Router.push('/');
+      Router.replace('/');
     }
   }, [isSignedUp]);
 

@@ -1,21 +1,25 @@
-{
+const dotenv = require('dotenv')
+
+dotenv.config()
+
+module.exports = {
   "development": {
     "username": "root",
-    "password": "RheeHunWns5628!@",
+    "password": process.env.DB_PASSWORD,
     "database": "react-node-bird",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "test": {
     "username": "root",
-    "password": "RheeHunWns5628!@",
+    "password": process.env.DB_PASSWORD,
     "database": "react-node-bird",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "production": {
     "username": "root",
-    "password": "RheeHunWns5628!@",
+    "password": process.env.DB_PASSWORD,
     "database": "react-node-bird",
     "host": "127.0.0.1",
     "dialect": "mysql"

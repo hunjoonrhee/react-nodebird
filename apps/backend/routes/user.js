@@ -1,10 +1,12 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
-const { User } = require('../models')
-const router = express.Router();
+const { User, Post } = require('../models')
 const passport = require('passport');
+const { isLoggedIn, isNotLoggedIn } = require('./middlewares')
 
-router.post('/login', (req, res, next) => {
+const router = express.Router();
+
+router.post('/login', isNotLoggedIn, (req, res, next) => {
   passport.authenticate('local', (err, user, info)=> {
     if (err) {
       console.error(err);
@@ -16,16 +18,30 @@ router.post('/login', (req, res, next) => {
     if(user) {
       return req.login(user, async (loginErr) => {
         if (loginErr) {
-          console.error(err);
           return next(loginErr);
         }
-        return res.json(user);
+        const fullUserWithoutPassword = await User.findOne({
+          where: {id: user.id},
+          attributes: {
+            exclude: ['password']
+          },
+          include: [{
+            model: Post,
+          }, {
+            model: User,
+            as: 'Followings',
+          }, {
+            model: User,
+            as: 'Followers'
+          }]
+        })
+        return res.status(200).json(fullUserWithoutPassword);
       })
     }
   })(req, res, next)
 });
 
-router.post('/', async (req, res,next) => {
+router.post('/', isNotLoggedIn, async (req, res,next) => {
   try {
     //중복 이메일 찾기
     const exUser = await User.findOne({
@@ -50,4 +66,10 @@ router.post('/', async (req, res,next) => {
   }
 });
 
+router.post('/logout', isLoggedIn, (req, res, next) => {
+  req.logout(()=>{
+    req.session.destroy();
+    res.send('ok');
+  })
+})
 module.exports = router;
