@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import AppLayout from '../components/AppLayout';
 import PostForm from '../components/PostForm';
 import PostCard from '../components/PostCard';
-import { LOAD_POSTS_REQUEST } from '../actions';
+import { LOAD_POSTS_REQUEST, LOAD_USER_REQUEST } from '../actions';
 
 function Home() {
   const { me } = useSelector((state) => state.user);
@@ -11,6 +11,9 @@ function Home() {
 
   const dispatch = useDispatch();
   useEffect(() => {
+    dispatch({
+      type: LOAD_USER_REQUEST,
+    });
     dispatch({
       type: LOAD_POSTS_REQUEST,
     });

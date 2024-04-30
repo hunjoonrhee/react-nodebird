@@ -20,6 +20,9 @@ import {
   UNFOLLOW_FAILURE,
   UNFOLLOW_SUCCESS,
   UNFOLLOW_REQUEST,
+  LOAD_USER_REQUEST,
+  LOAD_USER_SUCCESS,
+  LOAD_USER_FAILURE,
 } from '../actions';
 
 export const initialState = {
@@ -44,6 +47,9 @@ export const initialState = {
   unfollowLoading: false,
   unfollowDone: false,
   unfollowError: null,
+  loadUserLoading: false,
+  loadUserDone: false,
+  loadUserError: false,
 };
 
 const dummyUser = (data) => ({
@@ -160,6 +166,21 @@ const reducer = (state = initialState, action) =>
         draft.unfollowLoading = false;
         draft.unfollowDone = false;
         draft.unfollowError = action.error;
+        break;
+      case LOAD_USER_REQUEST:
+        draft.loadUserLoading = true;
+        draft.loadUserDone = false;
+        draft.loadUserError = null;
+        break;
+      case LOAD_USER_SUCCESS:
+        draft.loadUserLoading = true;
+        draft.me = action.data;
+        draft.loadUserDone = true;
+        break;
+      case LOAD_USER_FAILURE:
+        draft.loadUserLoading = false;
+        draft.loadUserDone = false;
+        draft.loadUserError = action.error;
         break;
       default:
         return state;
