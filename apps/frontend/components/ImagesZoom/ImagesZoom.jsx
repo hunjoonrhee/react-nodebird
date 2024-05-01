@@ -16,12 +16,13 @@ function ImagesZoom({ images, onClose }) {
         right: 0,
         bottom: 0,
         alignItems: 'center',
-      }}
-    >
+      }}>
       {/* <Global /> */}
       <header style={ImagesZoomStyle.header}>
         <h1 style={{ margin: 0, fontSize: '17px', color: '#333', lineHeight: '44px' }}> Image details </h1>
-        <CloseOutlined style={ImagesZoomStyle.closeBtn} onClick={onClose}>X</CloseOutlined>
+        <CloseOutlined style={ImagesZoomStyle.closeBtn} onClick={onClose}>
+          X
+        </CloseOutlined>
       </header>
       <div style={ImagesZoomStyle.slick}>
         <div style={{ alignItems: 'center' }}>
@@ -31,11 +32,14 @@ function ImagesZoom({ images, onClose }) {
             infinite
             arrows={false}
             slidesToShow={1}
-            slidesToScroll={1}
-          >
+            slidesToScroll={1}>
             {images.map((v) => (
-              <div style={ImagesZoomStyle.imgDiv} key={v.src}>
-                <img style={ImagesZoomStyle.img} src={v.src} alt={v.src} />
+              <div style={ImagesZoomStyle.imgDiv} key={`http://localhost:3065/${v.src}`}>
+                <img
+                  style={ImagesZoomStyle.img}
+                  src={`http://localhost:3065/${v.src}`}
+                  alt={`http://localhost:3065/${v.src}`}
+                />
               </div>
             ))}
           </Slick>

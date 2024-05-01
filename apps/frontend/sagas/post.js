@@ -22,8 +22,10 @@ import {
   UNLIKE_POST_REQUEST,
   UNLIKE_POST_SUCCESS,
   UNLIKE_POST_FAILURE,
+  UPLOAD_IMAGES_REQUEST,
+  UPLOAD_IMAGES_SUCCESS,
+  UPLOAD_IMAGES_FAILURE,
 } from '../actions';
-import { generateDummyPost } from '../reducers/post';
 
 function loadPostsAPI() {
   return axios.get('/posts');
@@ -44,7 +46,7 @@ function* loadPosts(action) {
   }
 }
 function addPostAPI(data) {
-  return axios.post('/post', { content: data });
+  return axios.post('/post', data);
 }
 
 function* addPost(action) {
@@ -146,6 +148,28 @@ function* removePost(action) {
   }
 }
 
+function uploadImagesAPI(data) {
+  return axios.post('/post/images', data);
+}
+
+function* uploadImages(action) {
+  try {
+    const result = yield call(uploadImagesAPI, action.data);
+    yield put({
+      type: UPLOAD_IMAGES_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    yield put({
+      type: UPLOAD_IMAGES_FAILURE,
+      data: err.response.data,
+    });
+  }
+}
+
+function* watchUploadImages() {
+  yield throttle(5000, UPLOAD_IMAGES_REQUEST, uploadImages);
+}
 function* watchUnlikePost() {
   yield throttle(5000, UNLIKE_POST_REQUEST, unlikePost);
 }
@@ -175,5 +199,6 @@ export default function* postSaga() {
     fork(watchRemovePost),
     fork(watchLikePost),
     fork(watchUnlikePost),
+    fork(watchUploadImages),
   ]);
 }
