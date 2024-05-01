@@ -1,6 +1,6 @@
 const express = require('express');
 const { Post, Image, Comment, User } = require('../models');
-const { isLoggedIn } = require('../routes/middlewares');
+const { isLoggedIn } = require('./middlewares');
 
 const router = express.Router();
 
@@ -18,15 +18,16 @@ router.post('/', isLoggedIn, async (req, res, next) => {
           model: Comment,
           include: [
             {
-              model: User,
+              model: User, // 댓글 작성자
               attributes: ['id', 'nickname'],
             },
           ],
         },
-        { model: User, attributes: ['id', 'nickname'] },
+        { model: User, attributes: ['id', 'nickname'] }, // 게시글 작성자
+        { model: User, as: 'Likers', attributes: ['id'] }, // 좋아요 누른사람
       ],
     });
-    res.status(201).json(post);
+    res.status(201).json(fullPost);
   } catch (error) {
     console.error(error);
     next(error);
@@ -60,8 +61,48 @@ router.post('/:postId/comment', isLoggedIn, async (req, res, next) => {
   }
 });
 
-router.delete('/', isLoggedIn, (req, res) => {
-  res.json({ id: 2 });
+router.patch('/:postId/like', isLoggedIn, async (req, res, next) => {
+  try {
+    const post = await Post.findOne({
+      where: { id: req.params.postId },
+    });
+    if (!post) {
+      return res.status(403).send('post does not exist');
+    }
+    await post.addLikers(req.user.id);
+    res.json({ PostId: post.id, UserId: req.user.id });
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
+router.delete('/:postId/like', async (req, res, next) => {
+  try {
+    const post = await Post.findOne({
+      where: { id: req.params.postId },
+    });
+    if (!post) {
+      return res.status(403).send('post does not exist');
+    }
+    await post.removeLikers(req.user.id);
+    res.json({ PostId: post.id, UserId: req.user.id });
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
+router.delete('/:postId', isLoggedIn, async (req, res, next) => {
+  try {
+    await Post.destroy({
+      where: { id: req.params.postId, UserId: req.user.id },
+    });
+    res.status(200).json({ PostId: parseInt(req.params.postId, 10) });
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
 });
 
 module.exports = router;

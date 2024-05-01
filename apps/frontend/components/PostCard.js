@@ -7,11 +7,10 @@ import { Comment } from '@ant-design/compatible';
 import PostImages from './PostImages';
 import CommentForm from './CommentForm';
 import PostCardContent from './PostCardContent';
-import { REMOVE_POST_REQUEST } from '../actions';
+import { REMOVE_POST_REQUEST, UNLIKE_POST_REQUEST, LIKE_POST_REQUEST } from '../actions';
 import FollowButton from './FollowButton';
 
 function PostCard({ post }) {
-  const [liked, setLiked] = useState(false);
   const [commentFormOpened, setCommentFormOpened] = useState(false);
   const dispatch = useDispatch();
 
@@ -19,9 +18,20 @@ function PostCard({ post }) {
   const { removePostLoading } = useSelector((state) => state.post);
   const id = me?.id;
 
-  const onToggleLike = useCallback(() => {
-    setLiked((prev) => !prev);
+  const onUnLike = useCallback(() => {
+    dispatch({
+      type: UNLIKE_POST_REQUEST,
+      data: post.id,
+    });
   }, []);
+
+  const onLike = useCallback(() => {
+    dispatch({
+      type: LIKE_POST_REQUEST,
+      data: post.id,
+    });
+  }, []);
+
   const onToggleComment = useCallback(() => {
     setCommentFormOpened((prev) => !prev);
   }, []);
@@ -33,6 +43,8 @@ function PostCard({ post }) {
     });
   }, []);
 
+  const liked = post.Likers.find((v) => v.id === id);
+
   return (
     <div style={{ marginBottom: 20 }}>
       <Card
@@ -40,9 +52,9 @@ function PostCard({ post }) {
         actions={[
           <RetweetOutlined key="retweet" />,
           liked ? (
-            <HeartTwoTone key="heart" twoToneColor="#eb2f96" onClick={onToggleLike} />
+            <HeartTwoTone key="heart" twoToneColor="#eb2f96" onClick={onUnLike} />
           ) : (
-            <HeartOutlined key="heart" onClick={onToggleLike} />
+            <HeartOutlined key="heart" onClick={onLike} />
           ),
           <MessageOutlined key="comment" onClick={onToggleComment} />,
           <Popover
@@ -102,6 +114,7 @@ PostCard.propTypes = {
     createdAt: PropTypes.string,
     Comments: PropTypes.arrayOf(PropTypes.object),
     Images: PropTypes.arrayOf(PropTypes.object),
+    Likers: PropTypes.arrayOf(PropTypes.object),
   }).isRequired,
 };
 

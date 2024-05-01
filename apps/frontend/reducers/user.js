@@ -52,15 +52,6 @@ export const initialState = {
   loadUserError: false,
 };
 
-const dummyUser = (data) => ({
-  ...data,
-  nickname: 'joonie',
-  id: 1,
-  Posts: [{ id: 1 }],
-  Followings: [{ nickname: 'bongsoo' }, { nickname: 'insun' }, { nickname: 'eunjoo' }],
-  Followers: [{ nickname: 'bongsoo' }, { nickname: 'insun' }, { nickname: 'eunjoo' }],
-});
-
 export const loginRequestAction = (data) => ({
   type: LOG_IN_REQUEST,
   data,
@@ -122,6 +113,7 @@ const reducer = (state = initialState, action) =>
         draft.changingNicknameError = null;
         break;
       case CHANGE_NICKNAME_SUCCESS:
+        draft.me.nickname = action.data.nickname;
         draft.changingNicknameLoading = false;
         draft.changingNicknameDone = true;
         break;
@@ -133,7 +125,8 @@ const reducer = (state = initialState, action) =>
         draft.me.Posts.unshift({ id: action.data });
         break;
       case REMOVE_POST_OF_ME:
-        draft.me.Posts.filter((v) => v.id !== action.data);
+        draft.me.Posts = draft.me.Posts.filter((v) => v.id !== action.data);
+        console.log(action.data);
         break;
       case FOLLOW_REQUEST:
         draft.followLoading = true;
