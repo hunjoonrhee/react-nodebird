@@ -37,10 +37,8 @@ function LoginForm() {
         <Button type="primary" htmlType="submit" loading={isLoggingIn}>
           Sign In
         </Button>
-        <Link legacyBehavior href="/signup">
-          <a>
-            <Button>Sign Up</Button>{' '}
-          </a>
+        <Link href="/signup" passHref>
+          <Button>Sign Up</Button>{' '}
         </Link>
       </div>
     </Form>

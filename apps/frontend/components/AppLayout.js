@@ -13,13 +13,13 @@ function AppLayout({ children }) {
     <div>
       <Menu mode="horizontal">
         <Menu.Item key="home">
-          <Link legacyBehavior href="/">
-            <a>Node Bird</a>
+          <Link href="/" passHref>
+            Node Bird
           </Link>
         </Menu.Item>
         <Menu.Item key="profile">
-          <Link legacyBehavior href="/profile">
-            <a>Profile</a>
+          <Link href="/profile" passHref>
+            Profile
           </Link>
         </Menu.Item>
         <Menu.Item key="search">
@@ -27,8 +27,8 @@ function AppLayout({ children }) {
         </Menu.Item>
         {!(me && me.id) && (
           <Menu.Item key="signup">
-            <Link legacyBehavior href="/signup">
-              <a>Sign up</a>
+            <Link href="/signup" passHref>
+              Sign up
             </Link>
           </Menu.Item>
         )}
