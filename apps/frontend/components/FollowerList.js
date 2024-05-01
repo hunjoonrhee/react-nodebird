@@ -2,15 +2,32 @@ import React, { useMemo } from 'react';
 import { Card, List, Button } from 'antd';
 import PropTypes from 'prop-types';
 import { StopOutlined } from '@ant-design/icons';
+import { useDispatch } from 'react-redux';
 import { style as FollowerListStyle } from '../styles/FollowerList.style';
+import { UNFOLLOW_REQUEST, REMOVE_FOLLOWER_REQUEST } from '../actions/index.js';
 
 function FollowList({ header, data }) {
+  const dispatch = useDispatch();
+
   const style = useMemo(
     () => ({
       marginBottom: 20,
     }),
     [],
   );
+
+  const onClick = (id) => () => {
+    if (header === 'Following') {
+      dispatch({
+        type: UNFOLLOW_REQUEST,
+        data: id,
+      });
+    }
+    dispatch({
+      type: REMOVE_FOLLOWER_REQUEST,
+      data: id,
+    });
+  };
 
   return (
     <List
@@ -27,7 +44,7 @@ function FollowList({ header, data }) {
       dataSource={data}
       renderItem={(item) => (
         <List.Item style={FollowerListStyle.list}>
-          <Card actions={[<StopOutlined key="stop" />]}>
+          <Card actions={[<StopOutlined key="stop" onClick={onClick(item.id)} />]}>
             <Card.Meta description={item.nickname} />
           </Card>
         </List.Item>
