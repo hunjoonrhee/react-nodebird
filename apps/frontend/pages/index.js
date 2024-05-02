@@ -7,9 +7,15 @@ import { LOAD_POSTS_REQUEST, LOAD_USER_REQUEST } from '../actions';
 
 function Home() {
   const { me } = useSelector((state) => state.user);
-  const { mainPosts, hasMorePost, loadPostsLoading } = useSelector((state) => state.post);
+  const { mainPosts, hasMorePost, loadPostsLoading, retweetPostError } = useSelector((state) => state.post);
 
   const dispatch = useDispatch();
+  useEffect(() => {
+    if (retweetPostError) {
+      alert(retweetPostError);
+    }
+  }, [retweetPostError]);
+
   useEffect(() => {
     dispatch({
       type: LOAD_USER_REQUEST,
@@ -23,8 +29,10 @@ function Home() {
     function onScroll() {
       if (window.scrollY + document.documentElement.clientHeight > document.documentElement.scrollHeight - 300) {
         if (hasMorePost && !loadPostsLoading) {
+          const lastId = mainPosts[mainPosts.length - 1]?.id;
           dispatch({
             type: LOAD_POSTS_REQUEST,
+            lastId,
           });
         }
       }
