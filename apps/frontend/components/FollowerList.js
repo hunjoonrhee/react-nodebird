@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import { style as FollowerListStyle } from '../styles/FollowerList.style';
 import { UNFOLLOW_REQUEST, REMOVE_FOLLOWER_REQUEST } from '../actions/index.js';
 
-function FollowList({ header, data }) {
+function FollowList({ header, data, onClickMore, loading }) {
   const dispatch = useDispatch();
 
   const style = useMemo(
@@ -37,7 +37,9 @@ function FollowList({ header, data }) {
       header={<div>{header}</div>}
       loadMore={
         <div style={FollowerListStyle.btnDiv}>
-          <Button>More</Button>
+          <Button onClick={onClickMore} loading={loading}>
+            More
+          </Button>
         </div>
       }
       bordered
@@ -56,6 +58,8 @@ function FollowList({ header, data }) {
 FollowList.propTypes = {
   header: PropTypes.string.isRequired,
   data: PropTypes.array.isRequired,
+  onClickMore: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
 };
 
 export default FollowList;

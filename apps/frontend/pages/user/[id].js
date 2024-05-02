@@ -16,6 +16,7 @@ import {
 } from '../../actions/index.js';
 import AppLayout from '../../components/AppLayout.js';
 import PostCard from '../../components/PostCard.js';
+import FollowButton from '../../components/FollowButton.js';
 
 function User() {
   const dispatch = useDispatch();

@@ -1,8 +1,10 @@
 import React, { useCallback } from 'react';
 import { Avatar, Card, Button } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
+import Link from 'next/link';
 import { logoutRequestAction } from '../reducers/user';
 import { style as UserProfileStyle } from '../styles/UserProfile.style';
+import FollowButton from './FollowButton.js';
 
 function UserProfile() {
   const dispatch = useDispatch();
@@ -15,16 +17,29 @@ function UserProfile() {
     <Card
       actions={[
         <div key="twit">
-          Twit <br /> {me.Posts.length}
+          <Link href={`/user/${me.id}`} passHref>
+            Twit <br /> {me.Posts.length}
+          </Link>
         </div>,
         <div key="followings">
-          Following <br /> {me.Followings.length}
+          <Link href="/profile" passHref>
+            Following <br /> {me.Followings.length}
+          </Link>
         </div>,
         <div key="followers">
-          Followers <br /> {me.Followers.length}
+          <Link href="/profile" passHref>
+            Followers <br /> {me.Followers.length}
+          </Link>
         </div>,
       ]}>
-      <Card.Meta avatar={<Avatar>{me.nickname}</Avatar>} title={me.nickname} />
+      <Card.Meta
+        avatar={
+          <Link href={`/user/${me.id}`} passHref>
+            <Avatar>{me.nickname}</Avatar>
+          </Link>
+        }
+        title={me.nickname}
+      />
       <Button style={UserProfileStyle.btn} onClick={onLogOut} loading={isLoggingOut}>
         {' '}
         Sign out

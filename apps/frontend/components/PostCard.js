@@ -4,6 +4,7 @@ import { Avatar, Button, Card, List, Popover } from 'antd';
 import { EllipsisOutlined, HeartOutlined, HeartTwoTone, MessageOutlined, RetweetOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { Comment } from '@ant-design/compatible';
+import Link from 'next/link';
 import PostImages from './PostImages';
 import CommentForm from './CommentForm';
 import PostCardContent from './PostCardContent';
@@ -101,14 +102,22 @@ function PostCard({ post }) {
         {post.RetweetId && post.Retweet ? (
           <Card cover={post.Retweet.Images[0] && <PostImages images={post.Retweet.Images} />}>
             <Card.Meta
-              avatar={<Avatar>{post.Retweet.User.nickname[0]}</Avatar>}
+              avatar={
+                <Link href={`/user/${post.Retweet.User.id}`} passHref>
+                  <Avatar>{post.Retweet.User.nickname[0]}</Avatar>
+                </Link>
+              }
               title={post.Retweet.User.nickname}
               description={<PostCardContent postData={post.Retweet.content} />}
             />
           </Card>
         ) : (
           <Card.Meta
-            avatar={<Avatar>{post.User.nickname[0]}</Avatar>}
+            avatar={
+              <Link href={`/user/${post.User.id}`} passHref>
+                <Avatar>{post.User.nickname[0]}</Avatar>
+              </Link>
+            }
             title={post.User.nickname}
             description={<PostCardContent postData={post.content} />}
           />
@@ -125,7 +134,11 @@ function PostCard({ post }) {
               <li>
                 <Comment
                   author={item.User.nickname}
-                  avatar={<Avatar>{item.User.nickname[0]}</Avatar>}
+                  avatar={
+                    <Link href={`/user/${post.User.id}`} passHref>
+                      <Avatar>{item.User.nickname[0]}</Avatar>
+                    </Link>
+                  }
                   content={item.content}
                 />
               </li>

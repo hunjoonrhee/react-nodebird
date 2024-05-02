@@ -15,7 +15,6 @@ function FollowButton({ post }) {
         data: post.User.id,
       });
     } else {
-      console.log('!!!');
       dispatch({
         type: FOLLOW_REQUEST,
         data: post.User.id,

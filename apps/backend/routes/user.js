@@ -46,49 +46,6 @@ router.get('/', async (req, res, next) => {
     next(error);
   }
 });
-router.get('/:userId', async (req, res, next) => {
-  try {
-    const user = await User.findOne({
-      where: { id: req.params.userId },
-    });
-
-    const fullUserWithoutPassword = await User.findOne({
-      where: { id: user.id },
-      attributes: {
-        exclude: ['password'],
-      },
-      include: [
-        {
-          model: Post,
-          attributes: ['id'],
-        },
-        {
-          model: User,
-          as: 'Followings',
-          attributes: ['id'],
-        },
-        {
-          model: User,
-          as: 'Followers',
-          attributes: ['id'],
-        },
-      ],
-    });
-    if (fullUserWithoutPassword) {
-      // 개인정보 보호
-      const data = fullUserWithoutPassword.toJSON();
-      data.Posts = data.Posts.length;
-      data.Followers = data.Followers.length;
-      data.Followings = data.Followings.length;
-      res.status(200).json(data);
-    } else {
-      res.status(403).send('User does not exist');
-    }
-  } catch (error) {
-    console.error(error);
-    next(error);
-  }
-});
 
 router.post('/login', isNotLoggedIn, (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {
@@ -178,42 +135,6 @@ router.patch('/nickname', isLoggedIn, async (req, res, next) => {
   }
 });
 
-router.patch('/:userId/follow', isLoggedIn, async (req, res, next) => {
-  try {
-    const toBeFollowedUser = await User.findOne({
-      where: { id: req.params.userId },
-    });
-    if (!toBeFollowedUser) {
-      return res.status(403).send('User does not exist!');
-    }
-    const followingUser = await User.findOne({
-      where: { id: req.user.id },
-    });
-    await toBeFollowedUser.addFollower(req.user.id);
-    // await followingUser.addFollowing(req.params.userId);
-    res.status(200).json({ UserId: parseInt(req.params.userId, 10) });
-  } catch (error) {
-    console.error(error);
-    next(error);
-  }
-});
-
-router.delete('/:userId/follow', isLoggedIn, async (req, res, next) => {
-  try {
-    const toBeUnFollowedUser = await User.findOne({
-      where: { id: req.params.userId },
-    });
-    if (!toBeUnFollowedUser) {
-      return res.status(403).send('User does not exist!');
-    }
-    await toBeUnFollowedUser.removeFollower(req.user.id);
-    res.status(200).json({ UserId: parseInt(req.params.userId, 10) });
-  } catch (error) {
-    console.error(error);
-    next(error);
-  }
-});
-
 router.get('/followers', isLoggedIn, async (req, res, next) => {
   try {
     const user = await User.findOne({
@@ -223,7 +144,7 @@ router.get('/followers', isLoggedIn, async (req, res, next) => {
       return res.status(403).send('User does not exist!');
     }
 
-    const followers = await user.getFollowers();
+    const followers = await user.getFollowers({ limit: parseInt(req.query.limit) });
     console.log(followers);
     res.status(200).json(followers);
   } catch (error) {
@@ -240,7 +161,7 @@ router.get('/followings', isLoggedIn, async (req, res, next) => {
     if (!user) {
       return res.status(403).send('User does not exist!');
     }
-    const followings = await user.getFollowings();
+    const followings = await user.getFollowings({ limit: parseInt(req.query.limit) });
     res.status(200).json(followings);
   } catch (error) {
     console.error(error);
@@ -318,6 +239,85 @@ router.get('/:userId/posts', async (req, res, next) => {
       ],
     });
     res.status(200).json(posts);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+router.get('/:userId', async (req, res, next) => {
+  try {
+    const user = await User.findOne({
+      where: { id: req.params.userId },
+    });
+
+    const fullUserWithoutPassword = await User.findOne({
+      where: { id: user.id },
+      attributes: {
+        exclude: ['password'],
+      },
+      include: [
+        {
+          model: Post,
+          attributes: ['id'],
+        },
+        {
+          model: User,
+          as: 'Followings',
+          attributes: ['id'],
+        },
+        {
+          model: User,
+          as: 'Followers',
+          attributes: ['id'],
+        },
+      ],
+    });
+    if (fullUserWithoutPassword) {
+      // 개인정보 보호
+      const data = fullUserWithoutPassword.toJSON();
+      data.Posts = data.Posts.length;
+      data.Followers = data.Followers.length;
+      data.Followings = data.Followings.length;
+      res.status(200).json(data);
+    } else {
+      res.status(403).send('User does not exist');
+    }
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
+router.patch('/:userId/follow', isLoggedIn, async (req, res, next) => {
+  try {
+    const toBeFollowedUser = await User.findOne({
+      where: { id: req.params.userId },
+    });
+    if (!toBeFollowedUser) {
+      return res.status(403).send('User does not exist!');
+    }
+    const followingUser = await User.findOne({
+      where: { id: req.user.id },
+    });
+    await toBeFollowedUser.addFollower(req.user.id);
+    // await followingUser.addFollowing(req.params.userId);
+    res.status(200).json({ UserId: parseInt(req.params.userId, 10) });
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
+router.delete('/:userId/follow', isLoggedIn, async (req, res, next) => {
+  try {
+    const toBeUnFollowedUser = await User.findOne({
+      where: { id: req.params.userId },
+    });
+    if (!toBeUnFollowedUser) {
+      return res.status(403).send('User does not exist!');
+    }
+    await toBeUnFollowedUser.removeFollower(req.user.id);
+    res.status(200).json({ UserId: parseInt(req.params.userId, 10) });
   } catch (error) {
     console.error(error);
     next(error);
