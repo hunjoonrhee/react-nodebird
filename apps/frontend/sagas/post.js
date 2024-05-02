@@ -9,6 +9,9 @@ import {
   ADD_POST_REQUEST,
   ADD_POST_SUCCESS,
   ADD_POST_TO_ME,
+  LOAD_POST_FAILURE,
+  LOAD_POST_REQUEST,
+  LOAD_POST_SUCCESS,
   LOAD_POSTS_FAILURE,
   LOAD_POSTS_REQUEST,
   LOAD_POSTS_SUCCESS,
@@ -30,6 +33,24 @@ import {
   RETWEET_POST_FAILURE,
 } from '../actions';
 
+function loadPostAPI(data) {
+  return axios.get(`/post/${data}`);
+}
+
+function* loadPost(action) {
+  try {
+    const result = yield call(loadPostAPI, action.data);
+    yield put({
+      type: LOAD_POST_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    yield put({
+      type: LOAD_POST_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
 function loadPostsAPI(lastId) {
   return axios.get(`/posts?lastId=${lastId || 0}`);
 }
@@ -202,6 +223,9 @@ function* watchLikePost() {
   yield throttle(5000, LIKE_POST_REQUEST, likePost);
 }
 function* watchLoadPost() {
+  yield throttle(5000, LOAD_POST_REQUEST, loadPost);
+}
+function* watchLoadPosts() {
   yield throttle(5000, LOAD_POSTS_REQUEST, loadPosts);
 }
 function* watchAddPost() {
@@ -219,6 +243,7 @@ function* watchRemovePost() {
 export default function* postSaga() {
   yield all([
     fork(watchLoadPost),
+    fork(watchLoadPosts),
     fork(watchAddPost),
     fork(watchAddComment),
     fork(watchRemovePost),

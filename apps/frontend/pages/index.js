@@ -1,9 +1,12 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { END } from 'redux-saga';
+import axios from 'axios';
 import AppLayout from '../components/AppLayout';
 import PostForm from '../components/PostForm';
 import PostCard from '../components/PostCard';
-import { LOAD_POSTS_REQUEST, LOAD_USER_REQUEST } from '../actions';
+import { LOAD_POSTS_REQUEST, LOAD_MY_INFO_REQUEST } from '../actions';
+import wrapper from '../store/configureStore.js';
 
 function Home() {
   const { me } = useSelector((state) => state.user);
@@ -15,15 +18,6 @@ function Home() {
       alert(retweetPostError);
     }
   }, [retweetPostError]);
-
-  useEffect(() => {
-    dispatch({
-      type: LOAD_USER_REQUEST,
-    });
-    dispatch({
-      type: LOAD_POSTS_REQUEST,
-    });
-  }, []);
 
   useEffect(() => {
     function onScroll() {
@@ -52,5 +46,21 @@ function Home() {
     </AppLayout>
   );
 }
+
+export const getServerSideProps = wrapper.getServerSideProps((store) => async (context) => {
+  const cookie = context.req ? context.req.headers.cookie : '';
+  axios.defaults.headers.Cookie = '';
+  if (context.req && cookie) {
+    axios.defaults.headers.Cookie = cookie;
+  }
+  store.dispatch({
+    type: LOAD_MY_INFO_REQUEST,
+  });
+  store.dispatch({
+    type: LOAD_POSTS_REQUEST,
+  });
+  store.dispatch(END);
+  await store.sagaTask.toPromise();
+});
 
 export default Home;

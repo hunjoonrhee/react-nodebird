@@ -2,6 +2,7 @@ const express = require('express');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const { Op } = require('sequelize');
 const { Post, Image, Comment, User, Hashtag } = require('../models');
 const { isLoggedIn } = require('./middlewares');
 
@@ -26,6 +27,62 @@ const upload = multer({
     },
   }),
   limits: { fileSize: 20 * 1024 * 1024 }, // 20MB
+});
+
+router.get('/:postId', async (req, res, next) => {
+  try {
+    const post = await Post.findOne({
+      where: { id: req.params.postId },
+    });
+    if (!post) {
+      return res.status(404).send('Not existing Post!');
+    }
+    const fullPost = await Post.findOne({
+      where: { id: post.id },
+      include: [
+        {
+          model: User,
+          attributes: ['id', 'nickname'],
+        },
+        {
+          model: Image,
+        },
+        {
+          model: Comment,
+          include: [
+            {
+              model: User,
+              attributes: ['id', 'nickname'],
+            },
+          ],
+        },
+        { model: User, as: 'Likers', attributes: ['id'] }, // 좋아요 누른사람
+        {
+          model: Post,
+          as: 'Retweet',
+          include: [
+            {
+              model: User,
+              attributes: ['id', 'nickname'],
+            },
+            {
+              model: Image,
+            },
+            {
+              model: User,
+              as: 'Likers',
+              attributes: ['id'],
+            },
+          ],
+        },
+      ],
+    });
+    console.log('FULLPOST', fullPost);
+    res.status(200).json(fullPost);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
 });
 
 router.post('/', isLoggedIn, upload.none(), async (req, res, next) => {

@@ -2,10 +2,18 @@ import React, { useEffect } from 'react';
 import Head from 'next/head';
 import { useDispatch, useSelector } from 'react-redux';
 import Router from 'next/router';
+import axios from 'axios';
+import { END } from 'redux-saga';
 import AppLayout from '../components/AppLayout';
 import NicknameEditForm from '../components/NicknameEditForm';
 import FollowList from '../components/FollowerList';
-import { LOAD_FOLLOWERS_REQUEST, LOAD_FOLLOWINGS_REQUEST } from '../actions/index.js';
+import {
+  LOAD_FOLLOWERS_REQUEST,
+  LOAD_FOLLOWINGS_REQUEST,
+  LOAD_MY_INFO_REQUEST,
+  LOAD_POSTS_REQUEST,
+} from '../actions/index.js';
+import wrapper from '../store/configureStore.js';
 
 function Profile() {
   const dispatch = useDispatch();
@@ -44,5 +52,21 @@ function Profile() {
     </>
   );
 }
+
+export const getServerSideProps = wrapper.getServerSideProps((store) => async (context) => {
+  const cookie = context.req ? context.req.headers.cookie : '';
+  axios.defaults.headers.Cookie = '';
+  if (context.req && cookie) {
+    axios.defaults.headers.Cookie = cookie;
+  }
+  store.dispatch({
+    type: LOAD_MY_INFO_REQUEST,
+  });
+  store.dispatch({
+    type: LOAD_POSTS_REQUEST,
+  });
+  store.dispatch(END);
+  await store.sagaTask.toPromise();
+});
 
 export default Profile;

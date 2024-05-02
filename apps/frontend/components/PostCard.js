@@ -62,7 +62,8 @@ function PostCard({ post }) {
     });
   }, [id]);
 
-  const liked = post.Likers.find((v) => v.id === id);
+  console.log('post:', post);
+  const liked = post.Likers?.find((v) => v.id === id);
 
   return (
     <div style={{ marginBottom: 20 }}>

@@ -3,10 +3,13 @@ import Head from 'next/head';
 import { Checkbox, Form, Input, Button } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import Router from 'next/router';
+import axios from 'axios';
+import { END } from 'redux-saga';
 import AppLayout from '../components/AppLayout';
 import useInput from '../hooks/useInput';
 import { style as signupStyle } from '../styles/signup.style';
-import { SIGN_UP_REQUEST } from '../actions';
+import { LOAD_MY_INFO_REQUEST, LOAD_POSTS_REQUEST, SIGN_UP_REQUEST } from '../actions';
+import wrapper from '../store/configureStore.js';
 
 function Signup() {
   const { isSigningUp, isSignedUp, signUpError, me } = useSelector((state) => state.user);
@@ -115,5 +118,21 @@ function Signup() {
     </AppLayout>
   );
 }
+
+export const getServerSideProps = wrapper.getServerSideProps((store) => async (context) => {
+  const cookie = context.req ? context.req.headers.cookie : '';
+  axios.defaults.headers.Cookie = '';
+  if (context.req && cookie) {
+    axios.defaults.headers.Cookie = cookie;
+  }
+  store.dispatch({
+    type: LOAD_MY_INFO_REQUEST,
+  });
+  store.dispatch({
+    type: LOAD_POSTS_REQUEST,
+  });
+  store.dispatch(END);
+  await store.sagaTask.toPromise();
+});
 
 export default Signup;

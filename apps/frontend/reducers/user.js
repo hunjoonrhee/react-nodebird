@@ -23,6 +23,9 @@ import {
   LOAD_USER_REQUEST,
   LOAD_USER_SUCCESS,
   LOAD_USER_FAILURE,
+  LOAD_MY_INFO_REQUEST,
+  LOAD_MY_INFO_SUCCESS,
+  LOAD_MY_INFO_FAILURE,
   LOAD_FOLLOWINGS_FAILURE,
   LOAD_FOLLOWINGS_REQUEST,
   LOAD_FOLLOWINGS_SUCCESS,
@@ -48,14 +51,16 @@ export const initialState = {
   changingNicknameDone: false,
   changingNicknameError: null,
   me: null,
-  signUpData: {},
-  loginData: {},
+  userInfo: null,
   followLoading: false,
   followDone: false,
   followError: null,
   unfollowLoading: false,
   unfollowDone: false,
   unfollowError: null,
+  loadMyInfoLoading: false,
+  loadMyInfoDone: false,
+  loadMyInfoError: false,
   loadUserLoading: false,
   loadUserDone: false,
   loadUserError: false,
@@ -185,13 +190,28 @@ const reducer = (state = initialState, action) =>
         break;
       case LOAD_USER_SUCCESS:
         draft.loadUserLoading = true;
-        draft.me = action.data;
+        draft.userInfo = action.data;
         draft.loadUserDone = true;
         break;
       case LOAD_USER_FAILURE:
         draft.loadUserLoading = false;
         draft.loadUserDone = false;
         draft.loadUserError = action.error;
+        break;
+      case LOAD_MY_INFO_REQUEST:
+        draft.loadMyInfoLoading = true;
+        draft.loadMyInfoDone = false;
+        draft.loadMyInfoError = null;
+        break;
+      case LOAD_MY_INFO_SUCCESS:
+        draft.loadMyInfoLoading = true;
+        draft.me = action.data;
+        draft.loadMyInfoDone = true;
+        break;
+      case LOAD_MY_INFO_FAILURE:
+        draft.loadMyInfoLoading = false;
+        draft.loadMyInfoDone = false;
+        draft.loadMyInfoError = action.error;
         break;
       case LOAD_FOLLOWERS_REQUEST:
         draft.loadFollowersLoading = true;
