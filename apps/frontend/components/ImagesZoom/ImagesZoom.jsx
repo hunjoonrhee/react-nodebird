@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Slick from 'react-slick';
 import { CloseOutlined } from '@ant-design/icons';
 import { style as ImagesZoomStyle } from './IndexZoom.styles';
+import { backUrl } from '../../config/config.js';
 
 function ImagesZoom({ images, onClose }) {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -34,12 +35,8 @@ function ImagesZoom({ images, onClose }) {
             slidesToShow={1}
             slidesToScroll={1}>
             {images.map((v) => (
-              <div style={ImagesZoomStyle.imgDiv} key={`http://localhost:3065/${v.src}`}>
-                <img
-                  style={ImagesZoomStyle.img}
-                  src={`http://localhost:3065/${v.src}`}
-                  alt={`http://localhost:3065/${v.src}`}
-                />
+              <div style={ImagesZoomStyle.imgDiv} key={`${backUrl}/${v.src}`}>
+                <img style={ImagesZoomStyle.img} src={`${backUrl}/${v.src}`} alt={`${backUrl}/${v.src}`} />
               </div>
             ))}
           </Slick>
