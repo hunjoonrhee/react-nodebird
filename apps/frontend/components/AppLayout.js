@@ -58,7 +58,8 @@ function AppLayout({ children }) {
             href="https://www.zerocho.com"
             /* eslint-disable-next-line react/jsx-no-target-blank */
             target="_blank"
-            rel="noopener noreferrer">
+            rel="noopener noreferrer"
+          >
             Based on ZeroCho Lecture
           </a>
         </Col>

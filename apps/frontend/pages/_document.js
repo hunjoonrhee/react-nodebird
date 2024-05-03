@@ -20,10 +20,9 @@ MyDocument.getStaticProps = async (ctx) => {
   const originalRenderPage = ctx.renderPage;
 
   try {
-    ctx.renderPage = () =>
-      originalRenderPage({
-        enhanceApp: (App) => (props) => sheet.collectStyles(<App {...props} />),
-      });
+    ctx.renderPage = () => originalRenderPage({
+      enhanceApp: (App) => (props) => sheet.collectStyles(<App {...props} />),
+    });
 
     const initialProps = await Document.getInitialProps(ctx);
     return {

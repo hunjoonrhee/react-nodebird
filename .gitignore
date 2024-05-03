@@ -5,3 +5,4 @@ apps/frontend/.next/
 apps/backend/node_modules/
 apps/backend/.env
 /apps/backend/uploads/
+/apps/react-nodebird.pem

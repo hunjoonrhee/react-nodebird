@@ -34,7 +34,8 @@ function About() {
               <br />
               {userInfo.Followers}
             </div>,
-          ]}>
+          ]}
+        >
           <Card.Meta
             avatar={<Avatar>{userInfo.nickname[0]}</Avatar>}
             title={userInfo.nickname}
@@ -46,15 +47,13 @@ function About() {
   );
 }
 
-export const getServerSideProps = wrapper.getServerSideProps((store) => async (context) => {
+export const getStaticProps = wrapper.getStaticProps((store) => async (context) => {
   store.dispatch({
     type: LOAD_USER_REQUEST,
     data: 1,
   });
   store.dispatch(END);
   await store.sagaTask.toPromise();
-  const { userInfo } = store.getState().user; // Adjust based on your state structure
-  return { props: { userInfo } };
 });
 
 export default About;

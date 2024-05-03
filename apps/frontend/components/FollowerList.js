@@ -35,13 +35,13 @@ function FollowList({ header, data, onClickMore, loading }) {
       grid={{ gutter: 4, xs: 2, md: 3 }}
       size="small"
       header={<div>{header}</div>}
-      loadMore={
+      loadMore={(
         <div style={FollowerListStyle.btnDiv}>
           <Button onClick={onClickMore} loading={loading}>
             More
           </Button>
         </div>
-      }
+      )}
       bordered
       dataSource={data}
       renderItem={(item) => (

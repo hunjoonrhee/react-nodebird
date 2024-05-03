@@ -42,10 +42,7 @@ function User() {
     <AppLayout>
       {userInfo && (
         <Head>
-          <title>
-            {userInfo.nickname}
-            's Posts
-          </title>
+          <title>{userInfo.nickname}s Posts</title>
           <meta name="description" content={`${userInfo.nickname}'s Post`} />
           <meta property="og:title" content={`${userInfo.nickname}'s Post`} />
           <meta property="og:description" content={`${userInfo.nickname}'s Post`} />
@@ -72,7 +69,8 @@ function User() {
               <br />
               {userInfo.Followers}
             </div>,
-          ]}>
+          ]}
+        >
           <Card.Meta avatar={<Avatar>{userInfo.nickname[0]}</Avatar>} title={userInfo.nickname} />
         </Card>
       ) : null}

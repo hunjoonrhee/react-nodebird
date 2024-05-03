@@ -5,11 +5,14 @@ import { EllipsisOutlined, HeartOutlined, HeartTwoTone, MessageOutlined, Retweet
 import { useDispatch, useSelector } from 'react-redux';
 import { Comment } from '@ant-design/compatible';
 import Link from 'next/link';
+import moment from 'moment';
 import PostImages from './PostImages';
 import CommentForm from './CommentForm';
 import PostCardContent from './PostCardContent';
 import { REMOVE_POST_REQUEST, UNLIKE_POST_REQUEST, LIKE_POST_REQUEST, RETWEET_POST_REQUEST } from '../actions';
 import FollowButton from './FollowButton';
+
+moment.locale('de');
 
 function PostCard({ post }) {
   const [commentFormOpened, setCommentFormOpened] = useState(false);
@@ -63,7 +66,6 @@ function PostCard({ post }) {
     });
   }, [id]);
 
-  console.log('post:', post);
   const liked = post.Likers?.find((v) => v.id === id);
 
   return (
@@ -80,7 +82,7 @@ function PostCard({ post }) {
           <MessageOutlined key="comment" onClick={onToggleComment} />,
           <Popover
             key="more"
-            content={
+            content={(
               <Button.Group>
                 {id && post.User.id === id ? (
                   <>
@@ -93,34 +95,40 @@ function PostCard({ post }) {
                   <Button>Report</Button>
                 )}
               </Button.Group>
-            }>
+            )}
+          >
             <EllipsisOutlined />
           </Popover>,
         ]}
         title={post.RetweetId ? `${post.User.nickname} has retweeted. ` : null}
-        extra={id && post.User.id !== id && <FollowButton post={post} />}>
+        extra={id && post.User.id !== id && <FollowButton post={post} />}
+      >
         {post.RetweetId && post.Retweet ? (
           <Card cover={post.Retweet.Images[0] && <PostImages images={post.Retweet.Images} />}>
+            <div style={{ float: 'right' }}> {moment(post.createdAt).startOf('day').fromNow()}</div>
             <Card.Meta
-              avatar={
+              avatar={(
                 <Link href={`/user/${post.Retweet.User.id}`} passHref>
                   <Avatar>{post.Retweet.User.nickname[0]}</Avatar>
                 </Link>
-              }
+              )}
               title={post.Retweet.User.nickname}
               description={<PostCardContent postData={post.Retweet.content} />}
             />
           </Card>
         ) : (
-          <Card.Meta
-            avatar={
-              <Link href={`/user/${post.User.id}`} passHref>
-                <Avatar>{post.User.nickname[0]}</Avatar>
-              </Link>
-            }
-            title={post.User.nickname}
-            description={<PostCardContent postData={post.content} />}
-          />
+          <>
+            <div style={{ float: 'right' }}> {moment(post.createdAt).startOf('day').fromNow()}</div>
+            <Card.Meta
+              avatar={(
+                <Link href={`/user/${post.User.id}`} passHref>
+                  <Avatar>{post.User.nickname[0]}</Avatar>
+                </Link>
+              )}
+              title={post.User.nickname}
+              description={<PostCardContent postData={post.content} />}
+            />
+          </>
         )}
       </Card>
       {commentFormOpened && (
@@ -134,11 +142,11 @@ function PostCard({ post }) {
               <li>
                 <Comment
                   author={item.User.nickname}
-                  avatar={
+                  avatar={(
                     <Link href={`/user/${post.User.id}`} passHref>
                       <Avatar>{item.User.nickname[0]}</Avatar>
                     </Link>
-                  }
+                  )}
                   content={item.content}
                 />
               </li>

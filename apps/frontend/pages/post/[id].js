@@ -18,7 +18,7 @@ function Post() {
   return (
     <AppLayout>
       <Head>
-        <title>{singlePost.User.nickname}'s Post</title>
+        <title>{singlePost.User.nickname}s Post</title>
         <meta name="description" content={singlePost.content} />
         <meta property="og:title" content={`${singlePost.User.nickname}'s Post`} />
         <meta property="og:description" content={singlePost.content} />

@@ -12,7 +12,7 @@
     "node": true,
     "es6": true
   },
-  "extends": ["airbnb"],
+  "extends": ["airbnb", "plugin:@next/next/recommended"],
   "plugins": ["import", "react-hooks"],
   "rules": {
     "linebreak-style": "off",
@@ -36,7 +36,17 @@
         "peerDependencies": false
       }
     ],
-    "react/no-array-index-key": "off"
-
+    "react/no-array-index-key": "off",
+    "no-unused-vars": "off",
+    "consistent-return": "off",
+    "no-unescaped-entities": "off",
+    "no-alert": "off",
+    "import/extensions": "off",
+    "default-param-last": "off",
+    "react/jsx-props-no-spreading": "off",
+    "react/prop-types": "off",
+    "no-empty-pattern": "off",
+    "react/jsx-closing-bracket-location": "off",
+    "@next/next/no-img-element": "off"
   }
 }

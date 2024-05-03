@@ -31,13 +31,14 @@ function UserProfile() {
             Followers <br /> {me.Followers.length}
           </Link>
         </div>,
-      ]}>
+      ]}
+    >
       <Card.Meta
-        avatar={
+        avatar={(
           <Link href={`/user/${me.id}`} passHref>
             <Avatar>{me.nickname}</Avatar>
           </Link>
-        }
+        )}
         title={me.nickname}
       />
       <Button style={UserProfileStyle.btn} onClick={onLogOut} loading={isLoggingOut}>
