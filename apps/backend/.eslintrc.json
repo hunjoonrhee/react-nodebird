@@ -39,6 +39,5 @@
     "react/no-array-index-key": "off",
     "consistent-return": "off",
     "no-unused-vars": "off"
-
   }
 }
