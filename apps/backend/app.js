@@ -39,7 +39,7 @@ if (process.env.NODE_ENV === 'production') {
 
 app.use(
   cors({
-    origin: ['http://localhost:3002', 'reactbird.com', 'http://52.78.142.0'],
+    origin: ['http://localhost:3002', 'reactbird.com'],
     credentials: true,
   }),
 );
@@ -55,6 +55,11 @@ app.use(
     saveUninitialized: false,
     resave: false,
     secret: process.env.COOKIE_SECRET,
+    cookie: {
+      httpOnly: true,
+      secure: false,
+      domain: process.env.NODE_ENV === 'production' && '.reactbird.com',
+    },
   }),
 );
 
