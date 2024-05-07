@@ -35,7 +35,7 @@ const s3Client = new S3Client({
 });
 
 const upload = multer({
-  sotrage: multerS3({
+  storage: multerS3({
     // s3: new AWS.S3(),
     s3: s3Client,
     bucket: 'react-bird-s3',
