@@ -16,7 +16,6 @@ export const style = {
     padding: '15px',
     lineHeight: '14px',
     cursor: 'pointer',
-
   },
 
   slick: {
@@ -30,12 +29,8 @@ export const style = {
   },
 
   img: {
-    marginTop: 0,
-    marginBottom: 0,
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    maxHeight: '600px',
-    alignItems: 'center',
+    margin: '0 auto',
+    maxHeight: '750px',
   },
 
   closeBtn: {
@@ -58,7 +53,6 @@ export const style = {
     color: 'white',
     fontSize: '15px',
   },
-
 };
 
 export const Global = createGlobalStyle`

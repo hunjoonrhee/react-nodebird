@@ -36,7 +36,7 @@ function ImagesZoom({ images, onClose }) {
             slidesToScroll={1}>
             {images.map((v) => (
               <div style={ImagesZoomStyle.imgDiv} key={v.src}>
-                <img style={ImagesZoomStyle.img} src={v.src} alt={v.src} />
+                <img style={ImagesZoomStyle.img} src={v.src.replace.replace(/\/thumb\//, '/original/')} alt={v.src} />
               </div>
             ))}
           </Slick>
