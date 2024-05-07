@@ -6,7 +6,7 @@ const { Op } = require('sequelize');
 // eslint-disable-next-line import/no-extraneous-dependencies
 const multerS3 = require('multer-s3');
 // eslint-disable-next-line import/no-extraneous-dependencies
-const AWS = require('aws-sdk');
+// const AWS = require('aws-sdk');
 const { Post, Image, Comment, User, Hashtag } = require('../models');
 const { isLoggedIn } = require('./middlewares');
 
@@ -31,7 +31,7 @@ const s3Client = new S3Client({
     accessKeyId: process.env.S3_ACCESS_KEY_ID,
     secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
   },
-  region: 'ap-northease-2',
+  region: 'ap-northeast-2',
 });
 
 const upload = multer({
