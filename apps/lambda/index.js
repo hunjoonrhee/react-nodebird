@@ -20,8 +20,16 @@ exports.handler = async (event, context, callback) => {
   try {
     const getObjectParams = {Bucket, Key};
     const s3Object = await s3Client.send(new GetObjectCommand(getObjectParams));
-    console.log('original', s3Object.Body.length);
-    const resizedImage = await sharp(s3Object.Body)
+    const buffer = await new Promise((resolve, reject) => {
+      const chunks = [];
+      s3Object.Body.on('data', chunk => chunks.push(chunk));
+      s3Object.Body.on('error', reject);
+      s3Object.Body.on('end', () => resolve(Buffer.concat(chunks)));
+    });
+
+    console.log('original', buffer.length);
+
+    const resizedImage = await sharp(buffer)
       .resize(400,400, { fit: 'inside'})
       .toFormat(requiredFormat)
       .toBuffer();
