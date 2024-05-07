@@ -3,7 +3,9 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const { Op } = require('sequelize');
+// eslint-disable-next-line import/no-extraneous-dependencies
 const multerS3 = require('multer-s3');
+// eslint-disable-next-line import/no-extraneous-dependencies
 const AWS = require('aws-sdk');
 const { Post, Image, Comment, User, Hashtag } = require('../models');
 const { isLoggedIn } = require('./middlewares');
@@ -214,7 +216,7 @@ router.delete('/:postId', isLoggedIn, async (req, res, next) => {
   }
 });
 
-router.post('/images', isLoggedIn, upload.array('image'), async (req, res, next) => {
+router.post('/images', isLoggedIn, upload.array('image'), async (req, res) => {
   console.log(req.files);
   res.json(req.files.map((v) => v.location));
 });
