@@ -39,5 +39,7 @@
     "react/no-array-index-key": "off",
     "consistent-return": "off",
     "no-unused-vars": "off"
-  }
+  },
+  "implicit-arrow-linebreak": "off",
+  "function-paren-newline": "off"
 }
